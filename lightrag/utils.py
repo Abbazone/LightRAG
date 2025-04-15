@@ -19,6 +19,9 @@ import tiktoken
 from lightrag.prompt import PROMPTS
 from dotenv import load_dotenv
 
+
+LOG_FILE_NAME = "tagging-system"
+
 # Use TYPE_CHECKING to avoid circular imports
 if TYPE_CHECKING:
     from lightrag.base import BaseKVStorage
@@ -65,7 +68,7 @@ def set_verbose_debug(enabled: bool):
 statistic_data = {"llm_call": 0, "llm_cache": 0, "embed_call": 0}
 
 # Initialize logger
-logger = logging.getLogger("lightrag")
+logger = logging.getLogger(LOG_FILE_NAME)
 logger.propagate = False  # prevent log message send to root loggger
 # Let the main application configure the handlers
 logger.setLevel(logging.INFO)
@@ -153,7 +156,7 @@ def setup_logger(
         # Get log file path
         if log_file_path is None:
             log_dir = os.getenv("LOG_DIR", os.getcwd())
-            log_file_path = os.path.abspath(os.path.join(log_dir, "lightrag.log"))
+            log_file_path = os.path.abspath(os.path.join(log_dir, f"{LOG_FILE_NAME}.log"))
 
         # Ensure log directory exists
         os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
